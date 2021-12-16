@@ -1,11 +1,12 @@
 import "./App.css";
+import { Ghibli } from "./components/Ghibli";
+
+
 
 function App() {
   return (
     <div className="app">
-      <main>
-        <h1>Hello, world!</h1>
-      </main>
+   <Ghibli />
     </div>
   );
 }

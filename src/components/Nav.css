@@ -1,0 +1,11 @@
+
+.home-logo {
+    height: 50px;
+    width: 50px;
+    margin-top: 0!important;
+}
+
+nav div {
+    margin-top: 3vh;
+    text-decoration: none;
+}
