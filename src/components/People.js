@@ -10,12 +10,13 @@ class People extends Component {
         this.state={
             studioData:"",
             person:"",
-            isTrue: false
+            personSearched: "",
+            clicked: false
         }
     }
 
    
-  componentDidMount(){
+componentDidMount(){
 
     fetch ("https://ghibliapi.herokuapp.com/people")
     .then((response) => response.json())
@@ -37,46 +38,38 @@ handleSearch = (e)=> {
 
 handleSubmit = (e) => {
     e.preventDefault()
-    fetch ("https://ghibliapi.herokuapp.com/people")
-    .then((response) => response.json())
-    .then((data) => {
-      this.setState({
-        studioData: data
-      })
-    }).catch(console.log)
+   const {studioData, person} = this.state
+
+   let matchingPerson = studioData.find((each) => {
+       return each.name.toLowerCase() === person.toLowerCase()
+   })
+
+
+   this.setState({
+       personSearched: matchingPerson,
+       clicked: true
+   })
 }
 
 
+
   render () {
-    const {studioData, person, isTrue} = this.state
-        // console.log(studioData, person)
-
-
-       const showInfo = this.state.studioData && this.state.studioData.map((person) => {
-            if (person.name.toLowerCase() === this.state.person.toLowerCase()) {
-                return  (
-                <div key={person.id}>
-                <h2>Name: {person.name}</h2>
-                <p>Age: {person.age }</p>
-                <p>Gender: {person.gender}</p>
-                 </div>
-                )
-            }
-            return "Not Found"
-        })
-
-
-
-
+    console.log(this.state.studioData, this.state.person, this.state.personSearched, "clicked", this.state.clicked)
   return (
 
         <div className='people'>
             <h2>Search for a Person</h2>
             <form onSubmit={this.handleSubmit}>
-            <input  onChange={this.handleSearch}  id="values" name="search-person" type="text" />
-            <button onClick={this.isTrue}>Submit</button>
+            <input placeholder='Find Your Person' onChange={this.handleSearch} id="values" name="search-person" type="text" />
+            <button type='submit'>Submit</button>
             </form>
-            {showInfo}
+            {this.state.personSearched && <div key={this.state.personSearched.id}>
+                    <h2>Name: {this.state.personSearched.name}</h2>
+                    <p>Age: {this.state.personSearched.age }</p>
+                    <p>Gender: {this.state.personSearched.gender}</p>
+                    </div> 
+                    || this.state.clicked && <p>Not Found</p>
+            }
         </div>
   )
   }
